@@ -1,6 +1,7 @@
 "use strict";
 
 const BASE_URL = "https://hack-or-snooze-v3.herokuapp.com";
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvbiIsImlhdCI6MTY0MTU5MTE0NH0.UTvR0xruSuWqZan3MfVcQSLyKyNsUXWbCsBmWGhG1Us";
 
 /******************************************************************************
  * Story: a single story in the system
@@ -73,8 +74,15 @@ class StoryList {
    * Returns the new Story instance
    */
 
-  async addStory( /* user, newStory */) {
-    // UNIMPLEMENTED: complete this function!
+  async addStory(user, {title, author, url}) {
+    const token = user.loginToken;
+    const res = await axios.post(`${BASE_URL}/stories`, {
+      "token":token, 
+      "story": {"title":title, "author":author, "url": url}
+    })
+    console.log(res);
+    const result = new Story(res.data.story);
+    return result;
   }
 }
 

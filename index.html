@@ -37,12 +37,36 @@
   <div class="navbar-brand">
     <a class="nav-link" href="#" id="nav-all">Hack or Snooze</a>
   </div>
+  <div class="nav-buttons">
+    <a class="nav-link" href="#" id="nav-submit">submit</a>
+  </div>
   <div class="nav-right">
     <a class="nav-link" href="#" id="nav-login">login/signup</a>
     <a class="nav-link" href="#" id="nav-user-profile"></a>
     <a class="hidden" id="nav-logout" href="#"><small>(logout)</small></a>
   </div>
 </nav>
+
+<!-- area for submission form -->
+<section class="submit-form-container container">
+  <form action="#" id="submit-form" class="hidden" method="post">
+    <h4>Submit an Article</h4>
+    <div class="submit-input">
+      <label for="submit-title">title</label>
+      <input id="submit-title" placeholder="the best article ever">
+    </div>
+    <div class="submit-input">
+      <label for="submit-author">author</label>
+      <input id="submit-author" placeholder="kurt vonnegut">
+    </div>
+    <div class="submit-input">
+      <label for="submit-url">url</label>
+      <input id="submit-url" placeholder="askjeeves.com">
+    </div>
+    <button type="submit">submit</button>
+    <hr>
+  </form>
+</section>
 
 <!-- area for stories (all stories, user stories, favorites) -->
 <section class="stories-container container">
