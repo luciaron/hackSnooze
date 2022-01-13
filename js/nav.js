@@ -39,6 +39,7 @@ function updateNavOnLogin() {
 
 function navSubmitClick(e) {
   console.debug('navSubmitClick', e);
+  hidePageComponents();
   $submitForm.show();
 }
 

@@ -81,7 +81,9 @@ class StoryList {
       url: `${BASE_URL}/stories`,
       data: { token, story: { title, author, url}}
     });
-    
+    const result = new Story(res.data.story);
+    console.log(result);
+    return result;
   }
 
   //  async addStory(user, {title, author, url}) {

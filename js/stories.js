@@ -60,5 +60,6 @@ async function sendSubmitForm(e) {
   const url = $("#submit-url").val();
   let res = await storyList.addStory(currentUser, {title, author, url});
   console.log('clicked');
+  storyList = await StoryList.getStories();
   // return res;
 }
