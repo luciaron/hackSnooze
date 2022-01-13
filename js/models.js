@@ -85,33 +85,6 @@ class StoryList {
     console.log(result);
     return result;
   }
-
-  //  async addStory(user, {title, author, url}) {
-  //   const token = user.loginToken;
-  //   const res = await axios.post({
-  //   url: `${BASE_URL}/stories`,
-  //   data: {
-  //   token,
-  //   {title, author, url}
-  //   }
-  //   });
-  //   console.log(res);
-  //   const result = new Story(res.data.story);
-  //   return result;
-  // }
-  // async addStory(user, {title, author, url}) {
-  //   const token = user.loginToken;
-  //   const res = await axios.post({
-  //     url: `${BASE_URL}/stories`, 
-  //     data: {
-  //     token, 
-  //     "story": {"title":title, "author":author, "url": url}
-  //     }
-  //   })
-  //   console.log(res);
-  //   const result = new Story(res.data.story);
-  //   return result;
-  // }
 }
 
 
