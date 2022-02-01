@@ -36,4 +36,11 @@
 
 .story-user {
   display: block;
+  color: red;
+}
+
+.star {
+  font-weight: bold;
+  color: red;
+  font-size: 60px;
 }

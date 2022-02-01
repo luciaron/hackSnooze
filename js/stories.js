@@ -22,9 +22,10 @@ async function getAndShowStoriesOnStart() {
 function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
-  const hostName = story.getHostName();
+  const hostName = story.getHostName(); // ask Ryan about the css issue; used inline styling in the interim
   return $(`
       <li id="${story.storyId}">
+        <span class="star" style="color:#ff6600">&star; </span>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -61,5 +62,15 @@ async function sendSubmitForm(e) {
   let res = await storyList.addStory(currentUser, {title, author, url});
   console.log('clicked');
   storyList = await StoryList.getStories();
+  currentUser.ownStories.push(res);
+  // console.log(res);
   // return res;
+}
+
+$favStar.on("submit", addStoryToFavorites); // selector didn't work. select $allStoriesList then note target?
+
+//add stories to favorites
+async function addStoryToFavorites(e) {
+  e.preventDefault();
+  console.log(e.target);
 }
