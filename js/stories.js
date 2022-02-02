@@ -24,13 +24,12 @@ function generateStoryMarkup(story) {
 
   const hostName = story.getHostName(); // ask Ryan about the css issue; used inline styling in the interim
 
-//TODO:::::::::: if story in favorites, load &starf; - perhaps use JSON.stringify then search for the index? and "star fav" class, else:
   const userFavoritesString = JSON.stringify(currentUser.favorites);
 
-  if (userFavoritesString.indexOf(story.storyId) > -1) {
+        // don't need to adjust star bc it will be done in css
     return $(`
       <li id="${story.storyId}">
-        <span class="star" style="color:#ff6600">&starf; </span>
+        <span class="star" >&star; </span>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -39,19 +38,6 @@ function generateStoryMarkup(story) {
         <small class="story-user">posted by ${story.username}</small>
       </li>
     `);
-  } else {
-    return $(`
-      <li id="${story.storyId}">
-        <span class="star" style="color:#ff6600">&star; </span>
-        <a href="${story.url}" target="a_blank" class="story-link">
-          ${story.title}
-        </a>
-        <small class="story-hostname">(${hostName})</small>
-        <small class="story-author">by ${story.author}</small>
-        <small class="story-user">posted by ${story.username}</small>
-      </li>
-    `);
-  }
 }
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
@@ -91,7 +77,8 @@ $allStoriesList.on("click", addStoryToFavorites); // selector didn't work. selec
 async function addStoryToFavorites(e) {
   e.preventDefault();
   const tag = e.target.tagName;
-  const state = e.target.getAttribute('class');
+  // const state = e.target.getAttribute('class');
+  const id = e.target.parentElement.getAttribute('id');
   // console.log(tag);
   if (tag === "SPAN"){
     if (e.target.classList.contains('fav') !== true) {
@@ -111,7 +98,15 @@ async function addStoryToFavorites(e) {
       console.log(res);
       e.target.classList.toggle('fav');
 //TODO:::::::::: add to temp storage fav list
+      // first get story id then find story in story list?
       // change innerHTML to &starf; (filled star)
+      console.log(e.target.innerHTML) //yields star as we want
+      for (let story of storyList.stories) {
+        if (story.storyId === id) {
+          currentUser.favorites.push(story);
+        }
+      }
+      e.target.innerText = '&starf;'     //fills star for favorite live on page
     } else {
 //TODO::::::::::remove fav class remove from favorites post/delete call
       // 
