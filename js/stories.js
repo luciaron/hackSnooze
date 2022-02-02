@@ -23,6 +23,8 @@ function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName(); // ask Ryan about the css issue; used inline styling in the interim
+
+//TODO:::::::::: if story in favorites, load &starf; and "star fav" class, else:
   return $(`
       <li id="${story.storyId}">
         <span class="star" style="color:#ff6600">&star; </span>
@@ -67,10 +69,36 @@ async function sendSubmitForm(e) {
   // return res;
 }
 
-$favStar.on("submit", addStoryToFavorites); // selector didn't work. select $allStoriesList then note target?
+$allStoriesList.on("click", addStoryToFavorites); // selector didn't work. select $allStoriesList then note target?
 
 //add stories to favorites
 async function addStoryToFavorites(e) {
   e.preventDefault();
-  console.log(e.target);
+  const tag = e.target.tagName;
+  const state = e.target.getAttribute('class');
+  // console.log(tag);
+  if (tag === "SPAN"){
+    if (e.target.classList.contains('fav') === true) {
+      const selectedStoryId = e
+        .target
+        .parentElement
+        .getAttribute("id");
+      // console.log(selectedStoryId);
+      const token = currentUser.loginToken;
+      const username = currentUser.username;
+      // console.log(token);
+      const res = await axios({
+        method: "POST",
+        url: `${BASE_URL}/users/${username}/favorites/${selectedStoryId}`,
+        data: { token: token}
+      });
+      console.log(res);
+      e.target.classList.toggle('fav');
+//TODO:::::::::: add to temp storage fav list
+      // change innerHTML to &starf; (filled star)
+    } else {
+//TODO::::::::::remove fav class remove from favorites post/delete call
+      // 
+    }
+  }
 }
