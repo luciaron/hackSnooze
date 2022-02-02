@@ -22,7 +22,7 @@ async function getAndShowStoriesOnStart() {
 function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
-  const hostName = story.getHostName(); // ask Ryan about the css issue; used inline styling in the interim
+  const hostName = story.getHostName();
 
   const userFavoritesString = JSON.stringify(currentUser.favorites);
   
@@ -88,24 +88,19 @@ $allStoriesList.on("click", addStoryToFavorites); // selector didn't work. selec
 
 //add stories to favorites
 async function addStoryToFavorites(e) {
+
   e.preventDefault();
+
   const tag = e.target.tagName;
-  // const state = e.target.getAttribute('class');
   const id = e.target.parentElement.getAttribute('id');
-  // console.log(tag);
+  const token = currentUser.loginToken;
+  const username = currentUser.username;
+
   if (tag === "SPAN"){
     if (e.target.classList.contains('fav') !== true) {
-      const selectedStoryId = e
-        .target
-        .parentElement
-        .getAttribute("id");
-      // console.log(selectedStoryId);
-      const token = currentUser.loginToken;
-      const username = currentUser.username;
-      // console.log(token);
       const res = await axios({
         method: "POST",
-        url: `${BASE_URL}/users/${username}/favorites/${selectedStoryId}`,
+        url: `${BASE_URL}/users/${username}/favorites/${id}`,
         data: { token: token}
       });
       console.log(res);
@@ -115,9 +110,23 @@ async function addStoryToFavorites(e) {
           currentUser.favorites.push(story);
         }
       }
+      console.debug(id, 'added to favorites');
     } else {
 //TODO::::::::::remove fav class remove from favorites post/delete call
-      // 
+      const res = await axios({
+        method: "DELETE",
+        url: `${BASE_URL}/users/${username}/favorites/${id}`,
+        data: { token: token }
+      })
+      console.debug(id, 'removed from favorites');
+      //remove story from live favorites
+      e.target.classList.toggle('fav');
+      for (let story of storyList.stories) {
+        if (story.storyId === id) {
+          const idx = currentUser.favorites.indexOf(story);
+          currentUser.favorites.splice(idx, 1);
+        }
+      }
     }
   }
 }
