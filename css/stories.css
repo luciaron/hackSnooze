@@ -36,12 +36,15 @@
 
 .story-user {
   display: block;
-  color: red;
+  color: darkblue;
 }
 
-.star {
-  font-weight: bold;
-  color: #FF6600;
-  font-size: 25px;
-  fill: #FF6600
+span.star {
+  color: lightgray;
+  font-size: 20px;
+}
+
+span.star.fav {
+  color: #ff6600;
+  font-size: 20px;
 }

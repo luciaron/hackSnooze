@@ -25,11 +25,11 @@ function generateStoryMarkup(story) {
   const hostName = story.getHostName(); // ask Ryan about the css issue; used inline styling in the interim
 
   const userFavoritesString = JSON.stringify(currentUser.favorites);
-
-        // don't need to adjust star bc it will be done in css
+  
+  if (userFavoritesString.indexOf(story.storyId) > -1) {
     return $(`
       <li id="${story.storyId}">
-        <span class="star" >&star; </span>
+        <span class="star fav" >&starf; </span>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -38,6 +38,19 @@ function generateStoryMarkup(story) {
         <small class="story-user">posted by ${story.username}</small>
       </li>
     `);
+  } else {
+    return $(`
+    <li id="${story.storyId}">
+      <span class="star" >&starf; </span>
+      <a href="${story.url}" target="a_blank" class="story-link">
+        ${story.title}
+      </a>
+      <small class="story-hostname">(${hostName})</small>
+      <small class="story-author">by ${story.author}</small>
+      <small class="story-user">posted by ${story.username}</small>
+    </li>
+  `);
+  }
 }
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
@@ -97,16 +110,11 @@ async function addStoryToFavorites(e) {
       });
       console.log(res);
       e.target.classList.toggle('fav');
-//TODO:::::::::: add to temp storage fav list
-      // first get story id then find story in story list?
-      // change innerHTML to &starf; (filled star)
-      console.log(e.target.innerHTML) //yields star as we want
       for (let story of storyList.stories) {
         if (story.storyId === id) {
           currentUser.favorites.push(story);
         }
       }
-      e.target.innerText = '&starf;'     //fills star for favorite live on page
     } else {
 //TODO::::::::::remove fav class remove from favorites post/delete call
       // 
