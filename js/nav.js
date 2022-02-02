@@ -43,4 +43,22 @@ function navSubmitClick(e) {
   $submitForm.show();
 }
 
-$navSubmit.on("click", navSubmitClick);
+$navSubmit.on("click", navSubmitClick); 
+
+function navFavsClick(e) {
+  console.debug('navFavsClick', e);
+  hidePageComponents();
+  putFavsOnPage();
+  $allStoriesList.show();
+}
+
+$navFavs.on("click", navFavsClick);
+
+function navOwnStoriesClick(e) {
+  console.debug('navFavsClick', e);
+  hidePageComponents();
+  putOwnStoriesOnPage();
+  $allStoriesList.show();
+}
+
+$navOwnStories.on("click", navOwnStoriesClick);

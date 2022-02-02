@@ -69,6 +69,28 @@ function putStoriesOnPage() {
   $allStoriesList.show();
 }
 
+function putFavsOnPage() {
+  console.debug("putFavsOnPage");
+
+  $allStoriesList.empty();
+
+  for (let story of currentUser.favorites) {
+    const $story = generateStoryMarkup(story);
+    $allStoriesList.append($story);
+  }
+}
+
+function putOwnStoriesOnPage() {
+  console.debug("putOwnStoriesOnPage");
+
+  $allStoriesList.empty();
+
+  for (let story of currentUser.ownStories) {
+    const $story = generateStoryMarkup(story);
+    $allStoriesList.append($story);
+  }
+}
+
 $submitForm.on("submit", sendSubmitForm);
 
 async function sendSubmitForm(e) {
@@ -84,7 +106,7 @@ async function sendSubmitForm(e) {
   // return res;
 }
 
-$allStoriesList.on("click", addStoryToFavorites); // selector didn't work. select $allStoriesList then note target?
+$allStoriesList.on("click", addStoryToFavorites);
 
 //add stories to favorites
 async function addStoryToFavorites(e) {
@@ -112,7 +134,6 @@ async function addStoryToFavorites(e) {
       }
       console.debug(id, 'added to favorites');
     } else {
-//TODO::::::::::remove fav class remove from favorites post/delete call
       const res = await axios({
         method: "DELETE",
         url: `${BASE_URL}/users/${username}/favorites/${id}`,
