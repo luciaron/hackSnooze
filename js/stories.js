@@ -24,8 +24,23 @@ function generateStoryMarkup(story) {
 
   const hostName = story.getHostName(); // ask Ryan about the css issue; used inline styling in the interim
 
-//TODO:::::::::: if story in favorites, load &starf; and "star fav" class, else:
-  return $(`
+//TODO:::::::::: if story in favorites, load &starf; - perhaps use JSON.stringify then search for the index? and "star fav" class, else:
+  const userFavoritesString = JSON.stringify(currentUser.favorites);
+
+  if (userFavoritesString.indexOf(story.storyId) > -1) {
+    return $(`
+      <li id="${story.storyId}">
+        <span class="star" style="color:#ff6600">&starf; </span>
+        <a href="${story.url}" target="a_blank" class="story-link">
+          ${story.title}
+        </a>
+        <small class="story-hostname">(${hostName})</small>
+        <small class="story-author">by ${story.author}</small>
+        <small class="story-user">posted by ${story.username}</small>
+      </li>
+    `);
+  } else {
+    return $(`
       <li id="${story.storyId}">
         <span class="star" style="color:#ff6600">&star; </span>
         <a href="${story.url}" target="a_blank" class="story-link">
@@ -36,6 +51,7 @@ function generateStoryMarkup(story) {
         <small class="story-user">posted by ${story.username}</small>
       </li>
     `);
+  }
 }
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
@@ -78,7 +94,7 @@ async function addStoryToFavorites(e) {
   const state = e.target.getAttribute('class');
   // console.log(tag);
   if (tag === "SPAN"){
-    if (e.target.classList.contains('fav') === true) {
+    if (e.target.classList.contains('fav') !== true) {
       const selectedStoryId = e
         .target
         .parentElement
