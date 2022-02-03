@@ -48,3 +48,7 @@ span.star.fav {
   color: #ff6600;
   font-size: 20px;
 }
+
+span.delete {
+  color: red;
+}

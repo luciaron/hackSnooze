@@ -6,6 +6,7 @@ const $body = $("body");
 
 const $storiesLoadingMsg = $("#stories-loading-msg");
 const $allStoriesList = $("#all-stories-list");
+const $stories = $('li');
 const $favStar = $("span.star");
 
 const $loginForm = $("#login-form");

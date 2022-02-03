@@ -25,6 +25,7 @@ function generateStoryMarkup(story) {
   const hostName = story.getHostName();
 
   const userFavoritesString = JSON.stringify(currentUser.favorites);
+  const userOwnStoriesString = JSON.stringify(currentUser.ownStories);
   
   if (userFavoritesString.indexOf(story.storyId) > -1) {
     return $(`
@@ -53,6 +54,25 @@ function generateStoryMarkup(story) {
   }
 }
 
+
+function generateOwnStoryMarkup(story) {
+  // console.debug("generateStoryMarkup", story);
+
+  const hostName = story.getHostName();
+
+  return $(`
+    <li id="${story.storyId}">
+      <a href="${story.url}" target="a_blank" class="story-link">
+        ${story.title}
+      </a>
+      <small class="story-hostname">(${hostName})</small>
+      <small class="story-author">by ${story.author}</small>
+      <span class="delete">remove story</span>
+      <small class="story-user">posted by ${story.username}</small>
+    </li>
+  `);
+}
+
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
 function putStoriesOnPage() {
@@ -60,7 +80,6 @@ function putStoriesOnPage() {
 
   $allStoriesList.empty();
 
-  // loop through all of our stories and generate HTML for them
   for (let story of storyList.stories) {
     const $story = generateStoryMarkup(story);
     $allStoriesList.append($story);
@@ -86,8 +105,9 @@ function putOwnStoriesOnPage() {
   $allStoriesList.empty();
 
   for (let story of currentUser.ownStories) {
-    const $story = generateStoryMarkup(story);
+    const $story = generateOwnStoryMarkup(story);
     $allStoriesList.append($story);
+    $story.on("click", removeOwnStory)
   }
 }
 
@@ -150,4 +170,22 @@ async function addStoryToFavorites(e) {
       }
     }
   }
+}
+
+async function removeOwnStory (e) {
+  const ownStoryId = e.target.parentElement.getAttribute('id');
+  const token = currentUser.loginToken;
+  console.log('clicked to remove', ownStoryId);
+  const res = await axios({
+    method: "DELETE",
+    url: `${BASE_URL}/stories/${ownStoryId}`,
+    data: { token : token }
+  })
+  for (let story of currentUser.ownStories) {
+    if (story.storyId === ownStoryId) {
+      const idx = currentUser.ownStories.indexOf(story);
+      currentUser.ownStories.splice(idx, 1);
+    }
+  }
+  putOwnStoriesOnPage();
 }

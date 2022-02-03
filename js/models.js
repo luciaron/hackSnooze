@@ -1,7 +1,6 @@
 "use strict";
 
 const BASE_URL = "https://hack-or-snooze-v3.herokuapp.com";
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvbiIsImlhdCI6MTY0MTU5MTE0NH0.UTvR0xruSuWqZan3MfVcQSLyKyNsUXWbCsBmWGhG1Us";
 
 /******************************************************************************
  * Story: a single story in the system
@@ -25,8 +24,8 @@ class Story {
   /** Parses hostname out of URL and returns it. */
 
   getHostName() {
-    // UNIMPLEMENTED: complete this function!
-    return "hostname.com";
+    let url = new URL(this.url);
+    return url.hostname;
   }
 }
 
@@ -85,6 +84,8 @@ class StoryList {
     console.log(result);
     return result;
   }
+
+
 }
 
 
