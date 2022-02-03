@@ -180,10 +180,18 @@ async function removeOwnStory (e) {
     url: `${BASE_URL}/stories/${ownStoryId}`,
     data: { token : token }
   })
+  //removes story from currentUser obj
   for (let story of currentUser.ownStories) {
     if (story.storyId === ownStoryId) {
       const idx = currentUser.ownStories.indexOf(story);
       currentUser.ownStories.splice(idx, 1);
+    }
+  }
+  //removes story from storyList obj
+  for (let story of storyList.stories) {
+    if (story.storyId === ownStoryId) {
+      const idx = storyList.stories.indexOf(story);
+      storyList.stories.splice(idx, 1)
     }
   }
   putOwnStoriesOnPage();
