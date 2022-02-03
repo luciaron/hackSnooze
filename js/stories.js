@@ -122,8 +122,7 @@ async function sendSubmitForm(e) {
   console.log('clicked');
   storyList = await StoryList.getStories();
   currentUser.ownStories.push(res);
-  // console.log(res);
-  // return res;
+  $submitForm[0].reset();
 }
 
 $allStoriesList.on("click", addStoryToFavorites);
