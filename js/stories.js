@@ -28,6 +28,7 @@ function generateStoryMarkup(story) {
   const userOwnStoriesString = JSON.stringify(currentUser.ownStories);
   
   if (userFavoritesString.indexOf(story.storyId) > -1) {
+    // select star for click here rather than below; allows us to use the context; use arrow function or bind to access the correct "this"
     return $(`
       <li id="${story.storyId}">
         <span class="star fav" >&starf; </span>
@@ -133,39 +134,25 @@ async function addStoryToFavorites(e) {
   e.preventDefault();
 
   const tag = e.target.tagName;
-  const id = e.target.parentElement.getAttribute('id');
+  const storyId = e.target.parentElement.getAttribute('id');
   const token = currentUser.loginToken;
   const username = currentUser.username;
 
   if (tag === "SPAN"){
     if (e.target.classList.contains('fav') !== true) {
-      const res = await axios({
-        method: "POST",
-        url: `${BASE_URL}/users/${username}/favorites/${id}`,
-        data: { token: token}
-      });
-      console.log(res);
+      await currentUser.addStoryToFavorites(storyId)
       e.target.classList.toggle('fav');
-      for (let story of storyList.stories) {
-        if (story.storyId === id) {
-          currentUser.favorites.push(story);
-        }
-      }
-      console.debug(id, 'added to favorites');
+      console.debug(storyId, 'added to favorites')
     } else {
-      const res = await axios({
-        method: "DELETE",
-        url: `${BASE_URL}/users/${username}/favorites/${id}`,
-        data: { token: token }
-      })
-      console.debug(id, 'removed from favorites');
-      //remove story from live favorites
+      await currentUser.removeStoryFromFavorites(storyId)
       e.target.classList.toggle('fav');
-      for (let story of storyList.stories) {
-        if (story.storyId === id) {
-          const idx = currentUser.favorites.indexOf(story);
-          currentUser.favorites.splice(idx, 1);
-        }
+      console.debug(storyId, 'removed from favorites');
+    }
+    //remove story from live favorites
+    for (let story of storyList.stories) {
+      if (story.storyId === id) {
+        const idx = currentUser.favorites.indexOf(story);
+        currentUser.favorites.splice(idx, 1);
       }
     }
   }

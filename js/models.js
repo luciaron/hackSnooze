@@ -203,4 +203,25 @@ class User {
       return null;
     }
   }
+
+  async addStoryToFavorites(storyId){
+    const res = await axios({
+      method: "POST",
+      url: `${BASE_URL}/users/${this.username}/favorites/${storyId}`,
+      data: { token: this.token}
+    });
+    // console.log(res);
+    const storyData = res.data.story
+    this.favorites.push(new Story(storyData))
+  }
+
+  async removeStoryFromFavorites(storyId){
+    const res = await axios({
+      // move this to models like we did with the if statement call above; create a new method in User for that
+      method: "DELETE",
+      url: `${BASE_URL}/users/${this.username}/favorites/${storyId}`,
+      data: { token: this.token }
+    });
+    // console.log(res);
+  }
 }
